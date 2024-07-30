@@ -1,8 +1,10 @@
 # Rust 和 TypeScript 交互的例子
 
+- mac, ts to js cose 4.95ms, js evaluate and run 1.16ms
+
 ## 背景
 
-- RQuickJS 虽然可以转译 JS 并和 Rust 交互，但是由于缺乏静态检查，不容易使得在编写代码时能够发现和纠正错误。
+- RQuickJS 虽然可以转译 JS 并和 Rust 交互，但是由于缺乏类型检查，不容易使得在编写代码时能够发现和纠正错误。
 - TS 中可以定义接口和数据结构，使得代码更容易理解。
 - SWC 本身是 rust 写的，且可以转译 TypeScript 为 JavaScript，同时提供了静态检查。
 
@@ -13,3 +15,4 @@
 - Rust 中 Rc<RefCell<T>> 包裹的 Struct，通过 JsRc<T> 进行转换
 - JsRc<T> 通过 IntoJs<'js> 和 FromJs<'js> 进行转换
 - 由于转化过程会有 clone ，所以需要 Rc<RefCell<T>> 包裹，打破 clone
+
