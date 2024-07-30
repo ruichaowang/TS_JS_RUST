@@ -1,5 +1,13 @@
 # Rust 和 TypeScript 交互的例子
 
+## 背景
+
+- RQuickJS 虽然可以转译 JS 并和 Rust 交互，但是由于缺乏静态检查，不容易使得在编写代码时能够发现和纠正错误。
+- TS 中可以定义接口和数据结构，使得代码更容易理解。
+- SWC 本身是 rust 写的，且可以转译 TypeScript 为 JavaScript，同时提供了静态检查。
+
+## 细节
+
 - rust struct 数据被传递到 JS， JS 可以进行访问修改, JS 运行完毕后 rust 可以重新访问被 JS 修改的数据。
 - typescript to javascript 具体的转译的方法以及限制没有声明，有大量的 SWC 的功能无法被 QuickJS 所支持，需要确认哪种可以支持
 - Rust 中 Rc<RefCell<T>> 包裹的 Struct，通过 JsRc<T> 进行转换

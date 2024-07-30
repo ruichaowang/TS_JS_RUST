@@ -63,8 +63,8 @@ fn ts_to_js(filename: &str, ts_code: &str) -> (String, String) {
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     let current_dir = env::current_dir()?;
     println!("Current directory: {}", current_dir.display());
-    let ts_code = fs::read_to_string("./src/hello.ts")?;
-    let (js_script, sourcemap) = ts_to_js("hello.ts", &ts_code);
+    let ts_code = fs::read_to_string("./src/main.ts")?;
+    let (js_script, sourcemap) = ts_to_js("mian.ts", &ts_code);
 
     println!("Generated JavaScript:");
     println!("{}\n", js_script);

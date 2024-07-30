@@ -1,12 +1,16 @@
-interface Args {
-    name: string;
- }
+export { };
 
-function hello(param: Args) {
-    print(`hello ${param.name} from typescript!`);
+interface RustInstanceExample {
+    value: number;
+    increment(): void;
+    decrement(): void;
 }
 
-hello({ name: "World" });
+declare global {
+    function print(message: string): void;
+    var rustInstance: RustInstanceExample;
+}
+
 try {
     print(`Initial Vaule = ${rustInstance.value}`);
     rustInstance.value = 5;
@@ -15,7 +19,7 @@ try {
     print(`Incremented value = ${rustInstance.value}`);
     rustInstance.decrement();
     print(`Decremented value = ${rustInstance.value}`);
-  } catch (e) {
+} catch (e) {
     print(`JavaScript Error: ${e.stack}`);
     throw e;  // Re-throw to allow Rust to capture the exception
-  }
+}
