@@ -1,5 +1,5 @@
 pub mod js_rc;
-pub mod test_qjs_macro_module; // 由于转化过程会有 clone ，所以需要 Rc<RefCell<T>> 包裹，打破 clone
+pub mod test_qjs_macro_module;
 
 use js_rc::JsRc;
 use rquickjs::{
@@ -16,7 +16,6 @@ use swc_ecma_visit::FoldWith;
 use test_qjs_macro_module::counter_wrapper::TestRustClass;
 
 /// Transforms typescript to javascript. Returns tuple (js string, source map)
-/// 备注：具体的转译的方法以及限制没有声明，有大量的 SWC 的功能无法被 QuickJS 所支持，需要确认哪种可以支持
 fn ts_to_js(filename: &str, ts_code: &str) -> (String, String) {
     let cm = Lrc::new(SourceMap::new(swc_common::FilePathMapping::empty()));
 
@@ -61,9 +60,6 @@ fn ts_to_js(filename: &str, ts_code: &str) -> (String, String) {
     });
 }
 
-/// Rust 和 TypeScript 交互的例子
-/// Rust 中 Rc<RefCell<T>> 包裹的 Struct，通过 JsRc<T> 进行转换
-/// JsRc<T> 通过 IntoJs<'js> 和 FromJs<'js> 进行转换
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     let current_dir = env::current_dir()?;
     println!("Current directory: {}", current_dir.display());
@@ -75,7 +71,6 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     println!("Source Map:");
     println!("{}\n", sourcemap);
 
-    //  TS 转译 Done
     let rust_struct_rc = Rc::new(RefCell::new(TestRustClass::new(1)));
     let js_rc_struct: JsRc<TestRustClass> = JsRc::from(Rc::clone(&rust_struct_rc));
 
@@ -86,7 +81,6 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         (ScriptLoader::default(),),
     );
 
-    // rust struct 数据被传递到 JS， JS 可以进行访问修改
     ctx.with(|ctx| -> Result<(), Box<dyn std::error::Error>> {
         let closure_print = Function::new(ctx.clone(), |msg: String| {
             println!("{msg}");
@@ -106,7 +100,6 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         Ok(())
     })?;
 
-    // rust struct 数据被更新，并可以访问到
     let rust_struct_from_js = ctx.with(|ctx| {
         let global = ctx.globals();
         global
