@@ -1,6 +1,24 @@
 # Rust 和 TypeScript 交互的例子
 
-- mac, ts to js cose 4.95ms, js evaluate and run 1.16ms
+## mac
+
+- mac,直接 cargo run 运行， ts to js cose 4.95ms, js evaluate and run 1.16ms
+
+'''bash'''
+cargo run
+'''
+
+## android 例子
+
+- 安卓例子中，因为 RQuickjs 当前官方不支持 aarch64 的编译，所以只能演示 TS 转JS 并测试时间。
+- rquicjs 是可以自己编译 bidgen 的
+
+'''bash'''
+cargo build --target aarch64-linux-android
+adb push target/aarch64-linux-android/debug/android_swc /data/local/tmp
+adb push src/main.ts /data/local/tmp
+chmod +x android_swc
+'''
 
 ## 背景
 
