@@ -5,7 +5,7 @@ edition = "2021"
 
 [dependencies]
 swc = "0.282.3"
-swc_common = "0.36.2"
+swc_common = { version = "0.36.2", features = ["tty-emitter"] }
 swc_ecma_ast = "0.117.4"
 swc_ecma_parser = "0.148.1"
 swc_ecma_transforms_typescript = "0.194.2"
