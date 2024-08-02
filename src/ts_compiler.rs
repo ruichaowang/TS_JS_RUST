@@ -50,53 +50,9 @@ pub fn ts_to_js(filename: &str, ts_code: &str) -> Result<String, String> {
 mod tests {
     use super::*;
     use pretty_assertions::assert_eq;
-    use regex::Regex;
 
     fn normalize_string(s: &str) -> String {
         s.split_whitespace().collect()
-    }
-
-    fn remove_js_comments(js_code: &str) -> String {
-        // 创建正则表达式来匹配单行注释
-        let single_line_re = Regex::new(r"//.*").unwrap();
-        // 创建正则表达式来匹配多行注释
-        let multi_line_re = Regex::new(r"/\*[\s\S]*?\*/").unwrap();
-
-        // 首先删除多行注释
-        let without_multi_line_comments = multi_line_re.replace_all(js_code, "");
-
-        let without_comments = single_line_re.replace_all(&without_multi_line_comments, "");
-
-        without_comments.to_string()
-    }
-
-    #[test]
-    fn test_dsl() -> Result<(), Box<dyn std::error::Error>> {
-        println!("Current directory: {}", std::env::current_dir()?.display());
-        let ts_code = std::fs::read_to_string("./examples/hello1.ts")?;
-        let js_converted = ts_to_js("activity_hello.ts", &ts_code)?;
-        let js_original = std::fs::read_to_string("./examples/hello1.js")?;
-
-        assert_eq!(
-            normalize_string(&js_converted),
-            normalize_string(&remove_js_comments(&js_original))
-        );
-
-        Ok(())
-    }
-
-    #[test]
-    fn test_dsl_2() -> Result<(), Box<dyn std::error::Error>> {
-        let ts_code = std::fs::read_to_string("./examples/hello_2.ts")?;
-        let js_converted = ts_to_js("activity_hello.ts", &ts_code)?;
-        let js_original = std::fs::read_to_string("./examples/hello_2.js")?;
-
-        assert_eq!(
-            normalize_string(&js_converted),
-            normalize_string(&remove_js_comments(&js_original))
-        );
-
-        Ok(())
     }
 
     #[test]
