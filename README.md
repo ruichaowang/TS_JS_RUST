@@ -10,24 +10,6 @@
 cargo run
 ```
 
-## android 例子
-
-- 安卓例子中，因为 RQuickjs 当前官方不支持 aarch64 的编译，所以只能演示 TS 转JS 并测试时间。
-- rquicjs 是可以自己编译 bidgen 的
-
-'''bash'''
-cargo build --target aarch64-linux-android
-adb push target/aarch64-linux-android/debug/android_swc /data/local/tmp
-adb push src/main.ts /data/local/tmp
-chmod +x android_swc
-'''
-
-### test benchmark
-
-‘’‘bash’‘’
- cargo run --example test_swc_convert_time --release
-'''
-
 ## 背景
 
 - RQuickJS 虽然可以转译 JS 并和 Rust 交互，但是由于缺乏类型检查，不容易使得在编写代码时能够发现和纠正错误。
@@ -41,3 +23,21 @@ chmod +x android_swc
 - Rust 中 Rc<RefCell<T>> 包裹的 Struct，通过 JsRc<T> 进行转换
 - JsRc<T> 通过 IntoJs<'js> 和 FromJs<'js> 进行转换
 - 由于转化过程会有 clone ，所以需要 Rc<RefCell<T>> 包裹，打破 clone
+
+## swc android
+
+- 安卓例子中，因为 RQuickjs 当前官方不支持 aarch64 的编译，所以只能演示 TS 转JS 并测试时间。
+- rquicjs 是可以自己编译 bidgen 的
+
+```bash
+cargo build --target aarch64-linux-android
+adb push target/aarch64-linux-android/debug/android_swc /data/local/tmp
+adb push src/main.ts /data/local/tmp
+chmod +x android_swc
+```
+
+### test benchmark
+
+```bash
+ cargo run --example test_swc_convert_time --release
+```
