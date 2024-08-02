@@ -1,3 +1,5 @@
+#[deny(warnings)]
+ 
 pub mod js_rc;
 pub mod test_qjs_macro_module;
 mod ts_compiler;
