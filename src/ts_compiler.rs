@@ -9,6 +9,7 @@ use swc_ecma_visit::FoldWith;
 use std::io;
 
 /// Transforms TypeScript to JavaScript. Returns tuple (js string, source map)
+/// 当前参数使用的是默认参数
 pub fn ts_to_js(filename: &str, ts_code: &str) -> (String, String) {
     let cm = Lrc::new(SourceMap::new(swc_common::FilePathMapping::empty()));
 
@@ -33,7 +34,6 @@ pub fn ts_to_js(filename: &str, ts_code: &str) -> (String, String) {
             )
             .expect("parse_js failed");
 
-        // Transform theProgram
         let program = res;
         let unresolved_mark = Mark::new();
         let top_level_mark = Mark::new();
@@ -51,4 +51,44 @@ pub fn ts_to_js(filename: &str, ts_code: &str) -> (String, String) {
 
         return (ret.code, ret.map.expect("no source map"));
     });
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use pretty_assertions::assert_eq;
+
+    fn normalize_string(s: &str) -> String {
+        s.split_whitespace().collect()
+    }
+
+    #[test]
+    fn test_ts_to_js() {
+        let ts_code = r#"
+        function add(a: number, b: number): number {
+            return a + b;
+        }
+        "#;
+        let (js_code, source_map) = ts_to_js("test.ts", ts_code);
+
+        let expected_js_code = r#"
+        function add(a, b) {
+            return a + b;
+        }
+        "#;
+
+        assert_eq!(
+            normalize_string(js_code.trim()),
+            normalize_string(expected_js_code.trim())
+        );
+        assert!(!source_map.is_empty(), "Source map should not be empty");
+    }
+
+    #[test]
+    fn test_empty_code() {
+        let ts_code = "";
+        let (js_code, source_map) = ts_to_js("test.ts", ts_code);
+        assert_eq!(js_code, "");
+        assert!(!source_map.is_empty(), "Source map should not be empty");
+    }
 }

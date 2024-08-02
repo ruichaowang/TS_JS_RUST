@@ -10,5 +10,6 @@ swc_ecma_ast = "0.117.4"
 swc_ecma_parser = "0.148.1"
 swc_ecma_transforms_typescript = "0.194.2"
 swc_ecma_visit = "0.103.3"
+pretty_assertions = "1.4.0"
 
 rquickjs = { version = "0.6.2", features = ["loader", "macro"] }

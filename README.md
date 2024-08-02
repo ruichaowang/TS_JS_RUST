@@ -1,12 +1,14 @@
-# Rust 和 TypeScript 交互的例子
+# Rust 和 TypeScript 的例子
 
-## mac
+本项目展示了如何使用 SWC 将 TypeScript 转译为 JavaScript，并通过 RQuickJS 在 Rust 中执行 JavaScript 代码。由于 RQuickJS 当前版本对 aarch64 支持较差，该项目也提供了在 Android 上的编译和测试指南。
 
-- mac,直接 cargo run 运行， ts to js cose 4.95ms, js evaluate and run 1.16ms
+## macOS 上运行
 
-'''bash'''
+在 macOS 上，你可以直接运行以下命令来查看 TS 转 JS 和 JS 执行的时间：
+
+```bash
 cargo run
-'''
+```
 
 ## android 例子
 
@@ -18,6 +20,12 @@ cargo build --target aarch64-linux-android
 adb push target/aarch64-linux-android/debug/android_swc /data/local/tmp
 adb push src/main.ts /data/local/tmp
 chmod +x android_swc
+'''
+
+### test benchmark
+
+‘’‘bash’‘’
+ cargo run --example test_swc_convert_time --release
 '''
 
 ## 背景
@@ -33,4 +41,3 @@ chmod +x android_swc
 - Rust 中 Rc<RefCell<T>> 包裹的 Struct，通过 JsRc<T> 进行转换
 - JsRc<T> 通过 IntoJs<'js> 和 FromJs<'js> 进行转换
 - 由于转化过程会有 clone ，所以需要 Rc<RefCell<T>> 包裹，打破 clone
-
