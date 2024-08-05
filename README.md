@@ -14,7 +14,15 @@ tsc --version
 cargo run
 ```
 
+## Ubuntu 上运行
 
+```bash
+#更新到最新版本以支持2020
+sudo apt install nodejs npm -y
+sudo npm install -g typescript
+
+sudo npm install -g typescript
+```
 
 ## 背景
 
