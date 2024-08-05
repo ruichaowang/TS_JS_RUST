@@ -109,7 +109,7 @@ class ImageDemo extends DemoBase {
     }
 
     addImageDemo(): void {
-        let imageLayout = this.createFrameLayout(new RGBA(0xD5, 0xDD, 0xE7, 0xFF), 30, 20);
+        let imageLayout = this.createFrameLayout(new RGBA(0xFF, 0xDD, 0xE7, 0xFF), 30, 20);
 
         FrameLayout_add_WidgetTrait_with_lp(this.rootLayout,
             WidgetTrait_from_FrameLayout(imageLayout),
@@ -161,6 +161,15 @@ class TextDemo extends DemoBase {
     }
 }
 
+// Initialize root layout
+function initializeRootLayout(parent: Parent, activity: Activity): any {
+    let rootLayout = Object.assign(new FrameLayoutBuilder(parent), {
+        background_color: new RGBA(0xC0, 0xC8, 0xFF, 0xFF)
+    }).js_build_rc_refcell();
+    set_content(activity, rootLayout, Array(2880, 1380));
+    return rootLayout;
+}
+
 // Main function to initialize the UI
 function main(parent: Parent, activity: Activity): void {
     let rootLayout = initializeRootLayout(parent, activity);
@@ -170,14 +179,7 @@ function main(parent: Parent, activity: Activity): void {
     imageDemo.addImageDemo();
 }
 
-// Initialize root layout
-function initializeRootLayout(parent: Parent, activity: Activity): any {
-    let rootLayout = Object.assign(new FrameLayoutBuilder(parent), {
-        background_color: new RGBA(0xC0, 0xC8, 0xD8, 0xFF)
-    }).js_build_rc_refcell();
-    set_content(activity, rootLayout, Array(2880, 1380));
-    return rootLayout;
-}
+
 
 // Call the main function with appropriate arguments (parent and activity)
 main(parent, activity);
