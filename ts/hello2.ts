@@ -3,7 +3,6 @@ interface Activity { }
 
 declare const parent: Parent;
 declare const activity: Activity;
-
 import {
     FrameLayoutBuilder, RGBA, set_content,
     FrameLayout_add_WidgetTrait_with_lp, WidgetTrait_from_FrameLayout,
@@ -178,8 +177,6 @@ function main(parent: Parent, activity: Activity): void {
     const imageDemo = new ImageDemo(parent, rootLayout);
     imageDemo.addImageDemo();
 }
-
-
 
 // Call the main function with appropriate arguments (parent and activity)
 main(parent, activity);

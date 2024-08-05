@@ -19,7 +19,7 @@ fn main() {
             .join("\n");
 
         let start = std::time::Instant::now();
-        let _ = ts_to_js("test_swc", &ts_code);
+        let _ = ts_to_js("test_swc", Some(&ts_code), None);
         let duration = start.elapsed();
 
         println!("Time taken for {} lines of code: {:?}", *i, duration);

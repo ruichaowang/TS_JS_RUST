@@ -1,4 +1,4 @@
-use std::io::Write;
+use std::{io::Write, process::Command};
 
 use anyhow::{Context, Result};
 use swc::{config::IsModule, Compiler, PrintArgs};
@@ -12,9 +12,25 @@ use swc_ecma_visit::FoldWith;
 
 /// Transforms TypeScript to JavaScript. Returns tuple (js string, source map)
 /// 当前参数使用的是默认参数
-pub fn ts_to_js(filename: &str, ts_code: &str) -> Result<String, anyhow::Error> {
-    let temp_file = TempFile::new(ts_code)?;
-    run_tsc(&temp_file)?;
+pub fn ts_to_js(
+    filename: &str,
+    ts_code: Option<&str>,
+    tsconfig_path: Option<&str>,
+) -> Result<String, anyhow::Error> {
+    let temp_file = if let Some(code) = ts_code {
+        Some(TempFile::new(code)?)
+    } else {
+        None
+    };
+    
+    // 根据传入的参数，选择运行 tsc 的方式
+    if let Some(config) = tsconfig_path {
+        run_tsc(None, Some(config))?;
+    } else if let Some(ref file) = temp_file {
+        run_tsc(Some(file), None)?;
+    } else {
+        return Err(anyhow::anyhow!("Either ts_code or tsconfig_path must be provided"));
+    }
 
     let cm: Lrc<SourceMap> = Lrc::new(SourceMap::default());
     let handler = Handler::with_tty_emitter(ColorConfig::Auto, true, false, Some(cm.clone()));
@@ -22,7 +38,7 @@ pub fn ts_to_js(filename: &str, ts_code: &str) -> Result<String, anyhow::Error> 
 
     let fm = cm.new_source_file(
         Lrc::new(FileName::Custom(filename.into())),
-        ts_code.to_string(),
+        ts_code.unwrap_or("").to_string(),
     );
 
     GLOBALS.set(&Default::default(), || {
@@ -47,7 +63,7 @@ pub fn ts_to_js(filename: &str, ts_code: &str) -> Result<String, anyhow::Error> 
 
 // 使用 UUID 生成唯一文件名
 fn generate_unique_filename() -> String {
-    format!("temp_file_{}.ts", uuid::Uuid::new_v4())
+    format!("./ts/temp_file_{}.ts", uuid::Uuid::new_v4())
 }
 
 // 结构体用于自动管理临时文件
@@ -78,12 +94,22 @@ impl Drop for TempFile {
 }
 
 /// 为了静态检查 TypeScript 代码，我们需要使用 tsc 命令行工具
-fn run_tsc(temp_file: &TempFile) -> Result<()> {
-    let output = std::process::Command::new("tsc")
-        .arg("--noEmit") // 只进行类型检查，不生成输出文件
-        .arg(&temp_file.path)
-        .output()
-        .with_context(|| format!("Failed to start tsc for file: {}", temp_file.path))?;
+fn run_tsc(file_path: Option<&TempFile>, tsconfig_path: Option<&str>) -> Result<()> {
+    let mut command = Command::new("tsc");
+
+    command.arg("--noEmit"); // 只进行类型检查，不生成输出文件
+
+    if let Some(path) = file_path {
+        command.arg(&path.path); // 传递文件路径
+    } else if let Some(config) = tsconfig_path {
+        command.arg("--project").arg(config); // 传递 tsconfig.json 路径
+    } else {
+        return Err(anyhow::anyhow!(
+            "Either file_path or tsconfig_path must be provided"
+        ));
+    }
+
+    let output = command.output().context("Failed to execute tsc")?;
 
     if !output.status.success() {
         let stderr = String::from_utf8_lossy(&output.stderr);
@@ -119,7 +145,7 @@ mod tests {
 
         let temp_file = TempFile::new(ts_code).unwrap();
 
-        let result: std::result::Result<(), anyhow::Error> = run_tsc(&temp_file);
+        let result: std::result::Result<(), anyhow::Error> = run_tsc(Some(&temp_file), None);
         assert!(result.is_ok(), "Expected the type check to pass");
     }
 
@@ -130,7 +156,7 @@ mod tests {
             return a + b;
         }
         "#;
-        let js_result = ts_to_js("test.ts", ts_code);
+        let js_result = ts_to_js("test.ts", Some(ts_code), None);
         assert!(js_result.is_ok(), "Expected successful translation");
 
         let expected_js_code = r#"
@@ -151,7 +177,7 @@ mod tests {
     fn test_empty_code() {
         let ts_code = "";
 
-        let js_result = ts_to_js("test.ts", ts_code);
+        let js_result = ts_to_js("test.ts", Some(ts_code), None);
         assert!(js_result.is_ok(), "Expected successful translation");
 
         if let Ok(js_code) = js_result {
@@ -168,7 +194,7 @@ mod tests {
         }
         "#;
 
-        let js_result = ts_to_js("test.ts", ts_code);
+        let js_result = ts_to_js("test.ts", Some(ts_code), None);
         assert!(js_result.is_err(), "Expected translation to fail");
 
         if let Err(error) = js_result {
@@ -188,7 +214,7 @@ mod tests {
         }
         "#;
 
-        let js_result = ts_to_js("test.ts", ts_code);
+        let js_result = ts_to_js("test.ts", Some(ts_code), None);
         assert!(js_result.is_err(), "Expected translation to fail");
 
         if let Err(error) = js_result {
@@ -210,7 +236,7 @@ mod tests {
         const result = add(10);
         "#;
 
-        let js_result = ts_to_js("test.ts", ts_code);
+        let js_result = ts_to_js("test.ts", Some(ts_code), None);
         assert!(js_result.is_err(), "Expected translation to fail");
 
         if let Err(error) = js_result {

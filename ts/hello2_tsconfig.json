@@ -1,0 +1,20 @@
+{
+    "compilerOptions": {
+        "target": "es2020",
+        "module": "commonjs",
+        "lib": [
+            "ES2020",
+            "dom"
+        ],
+        "strict": true,
+        "esModuleInterop": true,
+        "skipLibCheck": true
+    },
+    "include": [
+        "./hello2.ts",
+        "./global.d.ts" 
+    ],
+    // "exclude": [
+    //     "node_modules"
+    // ]
+}
