@@ -22,14 +22,16 @@ pub fn ts_to_js(
     } else {
         None
     };
-    
+
     // 根据传入的参数，选择运行 tsc 的方式
     if let Some(config) = tsconfig_path {
         run_tsc(None, Some(config))?;
     } else if let Some(ref file) = temp_file {
         run_tsc(Some(file), None)?;
     } else {
-        return Err(anyhow::anyhow!("Either ts_code or tsconfig_path must be provided"));
+        return Err(anyhow::anyhow!(
+            "Either ts_code or tsconfig_path must be provided"
+        ));
     }
 
     let cm: Lrc<SourceMap> = Lrc::new(SourceMap::default());
