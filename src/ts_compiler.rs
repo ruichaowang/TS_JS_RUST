@@ -1,4 +1,3 @@
-#[deny(warnings)]
 use swc::{config::IsModule, Compiler, PrintArgs};
 use swc_common::{
     errors::{ColorConfig, Handler},
