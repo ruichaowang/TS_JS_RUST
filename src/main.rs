@@ -16,8 +16,9 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let start_time_swc = Instant::now();
     let current_dir = env::current_dir()?;
     println!("Current directory: {}", current_dir.display());
+
     let ts_code = fs::read_to_string("./src/main.ts")?;
-    let js_script = ts_to_js("mian.ts", Some(&ts_code), None)?;
+    let js_script = ts_to_js("mian.ts", Some(&ts_code))?;
 
     println!("Generated JavaScript:");
     println!("{}\n", js_script);
