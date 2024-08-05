@@ -42,17 +42,17 @@ const proj = "app/grt_widget_sdk/platform/android/app/";
 const testBitmap = `${root}${proj}src/main/res/drawable/test.jpg`;
 console.log("Test bitmap path: " + testBitmap);
 const createImageLayout = (parent)=>{
-    const layout = createFrameLayout(parent, new RGBA(0xFF, 0xFF, 0xE7, 0xFF), 30, 20);
-    FrameLayout_add_WidgetTrait_with_lp(rootLayout, WidgetTrait_from_FrameLayout(layout), Object.assign(new FrameLayoutParamsBuilder(), {
+    const image_layout = createFrameLayout(parent, new RGBA(0xFF, 0xFF, 0xE7, 0xFF), 30, 20);
+    FrameLayout_add_WidgetTrait_with_lp(rootLayout, WidgetTrait_from_FrameLayout(image_layout), Object.assign(new FrameLayoutParamsBuilder(), {
         width: 1415,
         height: 1340,
         margin_left: 20,
         gravity: LEFT | CENTER_VERTICAL
     }).js_build_rc_refcell());
-    addTextView(layout, parent, "ImageViews", new RGBA(0x3D, 0x3D, 0x3D, 0xFF), 36, CENTER, Bold, undefined, 20);
+    addTextView(image_layout, parent, "ImageViews", new RGBA(0x3D, 0x3D, 0x3D, 0xFF), 36, CENTER, Bold, undefined, 20);
     function addImageDemoCase(gravity, text, imageArgs = {}, imageLayoutArgs = {}, textLayoutArgs = {}) {
-        addImageView(layout, parent, testBitmap, 640, 480, gravity, imageArgs, imageLayoutArgs);
-        addTextView(layout, parent, text, new RGBA(0x3D, 0x3D, 0x3D, 0xFF), 36, gravity, undefined, textLayoutArgs.margin_top, textLayoutArgs.margin_left);
+        addImageView(image_layout, parent, testBitmap, 640, 480, gravity, imageArgs, imageLayoutArgs);
+        addTextView(image_layout, parent, text, new RGBA(0x3D, 0x3D, 0x3D, 0xFF), 36, gravity, undefined, textLayoutArgs.margin_top, textLayoutArgs.margin_left);
     }
     addImageDemoCase(LEFT | TOP, "FIT_XY", {}, {
         margin_left: 20,

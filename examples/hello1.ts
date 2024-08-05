@@ -45,6 +45,8 @@ const createLayoutParams = (width: number, height: number, gravity: number) => {
 	}).js_build_rc_refcell();
 };
 
+
+
 const frame_layout = createFrameLayout(parent, bg_weather_empty, 20.0);
 const text_view = createTextView(parent, "Hello World (Click me to load)", 36.0, bg_red, click_listener);
 const layout_params = createLayoutParams(WRAP_CONTENT, WRAP_CONTENT, CENTER);
