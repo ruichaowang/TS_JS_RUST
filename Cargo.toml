@@ -12,5 +12,7 @@ swc_ecma_transforms_typescript = "0.194.2"
 swc_ecma_visit = "0.103.3"
 pretty_assertions = "1.4.0"
 regex = "1.10.5"
+anyhow = "1.0.86"
+uuid =  { version = "1.10.0", features = ["v4"] }
 
 rquickjs = { version = "0.6.2", features = ["loader", "macro"] }

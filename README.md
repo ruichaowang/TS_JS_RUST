@@ -1,12 +1,16 @@
 # Rust 和 TypeScript 的例子
 
-本项目展示了如何使用 SWC 将 TypeScript 转译为 JavaScript，并通过 RQuickJS 在 Rust 中执行 JavaScript 代码。由于 RQuickJS 当前版本对 aarch64 支持较差，该项目也提供了在 Android 上的编译和测试指南。
+- 本项目展示了如何使用 SWC 将 TypeScript 转译为 JavaScript，并通过 RQuickJS 在 Rust 中执行 JavaScript 代码。由于 RQuickJS 当前版本对 aarch64 支持较差，该项目也提供了在 Android 上的编译和测试指南。
+- 静态检查需要安装 tsc 编译的的环境
 
 ## macOS 上运行
 
-在 macOS 上，你可以直接运行以下命令来查看 TS 转 JS 和 JS 执行的时间：
+在 macOS 上，你可以直接运行以下命令来查看 TS 转 JS 和 JS 执行的时间,但是由于有需要静态检测，必须用 tsc 编译的的环境
 
 ```bash
+brew install typescript
+tsc --version   
+
 cargo run
 ```
 

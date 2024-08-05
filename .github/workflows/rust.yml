@@ -19,6 +19,14 @@ jobs:
     - name: Install Rust
       run: rustup update stable
 
+    - name: Install Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '14'
+
+    - name: Install TypeScript
+      run: npm install -g typescript
+
     - name: Format
       run: cargo fmt -- --check
 
