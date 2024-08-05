@@ -25,7 +25,7 @@ pub fn ts_to_js(filename: &str, ts_code: &str) -> Result<String, anyhow::Error> 
         ts_code.to_string(),
     );
 
-    return GLOBALS.set(&Default::default(), || {
+    GLOBALS.set(&Default::default(), || {
         let program = compiler.parse_js(
             fm,
             &handler,
@@ -42,12 +42,12 @@ pub fn ts_to_js(filename: &str, ts_code: &str) -> Result<String, anyhow::Error> 
 
         let output = compiler.print(&program, PrintArgs::default())?;
         Ok(output.code)
-    });
+    })
 }
 
 // 使用 UUID 生成唯一文件名
 fn generate_unique_filename() -> String {
-    format!("temp_file_{}.ts", uuid::Uuid::new_v4().to_string())
+    format!("temp_file_{}.ts", uuid::Uuid::new_v4())
 }
 
 // 结构体用于自动管理临时文件
@@ -175,7 +175,7 @@ mod tests {
             assert!(
                 error.to_string().contains("Expression expected"),
                 "Unexpected error message: {}",
-                error.to_string()
+                error
             );
         }
     }
