@@ -14,7 +14,7 @@ use swc_ecma_visit::FoldWith;
 /// 当前参数使用的是默认参数
 pub fn ts_to_js(filename: &str, ts_code: Option<&str>) -> Result<String, anyhow::Error> {
     let cm: Lrc<SourceMap> = Lrc::new(SourceMap::default());
-    let handler = Handler::with_tty_emitter(ColorConfig::Auto, true, false, Some(cm.clone()));
+    let handler = Handler::with_tty_emitter(ColorConfig::Auto, false, false, Some(cm.clone()));
     let compiler = Compiler::new(cm.clone());
 
     let fm = cm.new_source_file(

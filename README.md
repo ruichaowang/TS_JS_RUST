@@ -14,8 +14,6 @@ tsc --version
 cargo run
 ```
 
-
-
 ## 背景
 
 - RQuickJS 虽然可以转译 JS 并和 Rust 交互，但是由于缺乏类型检查，不容易使得在编写代码时能够发现和纠正错误。
@@ -53,4 +51,10 @@ chmod +x android_swc
 ```bash
 cargo clippy --all-targets --all-features -- -D warnings
 cargo fmt
+```
+
+### 直接 tsc 翻译
+
+```bash
+tsc -p ./ts/hello2_tsconfig.json
 ```

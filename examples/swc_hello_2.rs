@@ -14,7 +14,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let ts_code = std::fs::read_to_string("./ts/hello2.ts")?;
     let js_converted = ts_to_js("hello", Some(&ts_code))?;
     // let output_path = "/mnt/b9e649fa-9394-476b-a89a-13f4b571aa04/LiGraphic/app/dsldemo/src/demos/samples/hello_world/activity_hello.app2.js";
-    let output_path = "./test.ts";
+    let output_path = "./ts/converted.js";
     let mut file = std::fs::File::create(output_path)?;
     file.write_all(js_converted.as_bytes())?;
     println!(
