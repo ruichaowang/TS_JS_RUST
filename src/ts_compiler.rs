@@ -28,7 +28,7 @@ pub fn ts_to_js(file_path: Option<&str>, ts_code: Option<&str>) -> Result<String
         let program = compiler.parse_js(
             fm,
             &handler,
-            swc_ecma_ast::EsVersion::Es2020,
+            swc_ecma_ast::EsVersion::Es2015,
             swc_ecma_parser::Syntax::Typescript(Default::default()),
             IsModule::Bool(true),
             Some(compiler.comments()),
