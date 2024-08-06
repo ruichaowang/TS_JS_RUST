@@ -14,6 +14,16 @@ tsc --version
 cargo run
 ```
 
+## Ubuntu 上运行
+
+```bash
+#更新到最新版本以支持2020
+sudo apt install nodejs npm -y
+sudo npm install -g typescript
+
+sudo npm install -g typescript
+```
+
 ## 背景
 
 - RQuickJS 虽然可以转译 JS 并和 Rust 交互，但是由于缺乏类型检查，不容易使得在编写代码时能够发现和纠正错误。
