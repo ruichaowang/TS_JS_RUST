@@ -4,15 +4,14 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
-swc = "0.282.0"
-swc_common = { version = "0.36.0", features = ["tty-emitter"] }
-swc_ecma_ast = "0.117.0"
-swc_ecma_parser = {version =  "0.148.0", features = ["typescript"] }
-swc_ecma_transforms_typescript = "0.194.0"
-swc_ecma_visit = "0.103.0"
+swc = "0.283.0"
+swc_common = { version = "0.37.0", features = ["tty-emitter"] }
+swc_ecma_ast = "0.118.0"
+swc_ecma_parser = {version =  "0.149.0", features = ["typescript"] }
+swc_ecma_transforms_typescript = "0.195.0"
+swc_ecma_visit = "0.104.0"
 pretty_assertions = "1.4.0"
 regex = "1.10.5"
 anyhow = "1.0.86"
-uuid =  { version = "1.10.0", features = ["v4"] }
 
 rquickjs = { version = "0.6.2", features = ["loader", "macro"] }
