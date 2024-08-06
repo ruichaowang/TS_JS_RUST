@@ -1,26 +1,32 @@
-use std::{io::Write, process::Command};
+use std::{io::Write, path::Path, process::Command};
 
 use anyhow::{Context, Result};
 use swc::{config::IsModule, Compiler, PrintArgs};
 use swc_common::{
     errors::{ColorConfig, Handler},
-    source_map::SourceMap,
-    sync::Lrc,
-    FileName, Mark, GLOBALS,
+    FileName, Mark, SourceMap, GLOBALS,
 };
+
+use swc_common::sync::Lrc;
 use swc_ecma_visit::FoldWith;
 
 /// Transforms TypeScript to JavaScript. Returns tuple (js string, source map)
-/// 当前参数使用的是默认参数
-pub fn ts_to_js(filename: &str, ts_code: Option<&str>) -> Result<String, anyhow::Error> {
-    let cm: Lrc<SourceMap> = Lrc::new(SourceMap::default());
-    let handler = Handler::with_tty_emitter(ColorConfig::Auto, false, false, Some(cm.clone()));
+/// 优先读取路径下的文件，如果没有则读取代码
+pub fn ts_to_js(file_path: Option<&str>, ts_code: Option<&str>) -> Result<String, anyhow::Error> {
+    let cm: Lrc<SourceMap> = Default::default();
+    let handler = Handler::with_tty_emitter(ColorConfig::Auto, true, false, Some(cm.clone()));
     let compiler = Compiler::new(cm.clone());
 
-    let fm = cm.new_source_file(
-        Lrc::new(FileName::Custom(filename.into())),
-        ts_code.unwrap_or("").to_string(),
-    );
+    let fm = if let Some(path) = file_path {
+        cm.load_file(Path::new(path)).expect("failed to load file")
+    } else if let Some(code) = ts_code {
+        cm.new_source_file(
+            Lrc::new(FileName::Custom("no_file".to_string())),
+            code.into(),
+        )
+    } else {
+        return Err(anyhow::anyhow!("Both filename and ts_code cannot be None"));
+    };
 
     GLOBALS.set(&Default::default(), || {
         let program = compiler.parse_js(
@@ -184,6 +190,7 @@ mod tests {
         }
     }
 
+    //let ts_code = std::fs::read_to_string("./ts/hello2.ts")?;
     #[test]
     fn test_ts_to_js() {
         let ts_code = r#"
@@ -191,7 +198,7 @@ mod tests {
             return a + b;
         }
         "#;
-        let js_result = ts_to_js("test.ts", Some(ts_code));
+        let js_result = ts_to_js(None, Some(ts_code));
         assert!(js_result.is_ok(), "Expected successful translation");
 
         let expected_js_code = r#"
@@ -212,7 +219,7 @@ mod tests {
     fn test_empty_code() {
         let ts_code = "";
 
-        let js_result = ts_to_js("test.ts", Some(ts_code));
+        let js_result = ts_to_js(None, Some(ts_code));
         assert!(js_result.is_ok(), "Expected successful translation");
 
         if let Ok(js_code) = js_result {
