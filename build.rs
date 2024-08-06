@@ -17,6 +17,7 @@ fn main() {
         println!("cargo:warning=TypeScript compilation failed");
         println!("cargo:warning=stderr: {}", stderr);
         println!("cargo:warning=stdout: {}", stdout);
+        // 退出构建脚本
         panic!("TypeScript compilation failed");
     }
 

@@ -133,6 +133,7 @@ mod tests {
         assert!(result.is_ok(), "Expected the type check to pass");
     }
 
+    /// 静态检查，此功能直接集成到 bildrs 中实现，realcases 
     #[test]
     fn test_run_tsc_with_config() {
         let result: std::result::Result<(), anyhow::Error> =
@@ -140,7 +141,6 @@ mod tests {
         assert!(result.is_ok(), "Expected the type check to pass");
     }
 
-    /// 静态检查
     #[test]
     fn test_type_error() {
         let ts_code = r#"

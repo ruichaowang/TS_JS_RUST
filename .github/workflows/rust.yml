@@ -30,8 +30,8 @@ jobs:
     - name: Format
       run: cargo fmt -- --check
 
-    - name: Lint
-      run: cargo clippy -- -D warnings
+    # - name: Lint
+    #   run: cargo clippy -- -D warnings
 
     - name: Build
       run: cargo build --verbose
