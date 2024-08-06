@@ -113,5 +113,6 @@ function main(parent, activity) {
     textDemo.addTextDemo();
     const imageDemo = new ImageDemo(parent, rootLayout);
     imageDemo.addImageDemo();
+    textDemo.addImageDemo();
 }
 main(parent, activity);

@@ -16,7 +16,6 @@ import {
 const root = "/home/lixiang/ligraphic/";
 const proj = "app/grt_widget_sdk/platform/android/app/";
 const testBitmap = root + proj + "src/main/res/drawable/test.jpg";
-
 class DemoBase {
     protected parent: Parent;
 
