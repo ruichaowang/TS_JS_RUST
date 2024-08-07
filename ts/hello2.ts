@@ -6,7 +6,7 @@ declare const activity: Activity;
 import {
     FrameLayoutBuilder, RGBA, set_content,
     FrameLayout_add_WidgetTrait_with_lp, WidgetTrait_from_FrameLayout,
-    LEFT, CENTER_VERTICAL, TextViewBuilder, CENTER, Bold,
+    LEFT, CENTER_VERTICAL, TextViewBuilder, CENTER, Regular,
     FrameLayoutParamsBuilder, WRAP_CONTENT, FrameLayout_add_view_with_lp,
     WidgetTrait_from_ImageView, ImageViewBuilder, WidgetTrait_from_TextView,
     CenterCrop, RIGHT, TOP, BOTTOM, ScaleType_Center
@@ -38,7 +38,7 @@ class DemoBase {
                 text_color: new RGBA(0x3D, 0x3D, 0x3D, 0xFF),
                 text_size: 36,
                 gravity: CENTER,
-                text_style: Bold
+                text_style: Regular
             }).js_build_rc_refcell(), Object.assign(new FrameLayoutParamsBuilder(), {
                 width: WRAP_CONTENT,
                 height: WRAP_CONTENT,
@@ -153,9 +153,9 @@ class TextDemo extends DemoBase {
         // Add various text demo cases
         this.addTextDemoCase(textLayout, {}, 110);
         this.addTextDemoCase(textLayout, { text_size: 48 }, 228);
-        this.addTextDemoCase(textLayout, { text_size: 64, text_style: Bold }, 358);
-        this.addTextDemoCase(textLayout, { text_color: new RGBA(0xE4, 0x18, 0x18, 0xFF), text_size: 64, text_style: Bold }, 488);
-        this.addTextDemoCase(textLayout, { text_color: new RGBA(0x18, 0x63, 0xE4, 0xFF), text_size: 64, text_style: Bold, background_color: new RGBA(0xFF, 0x00, 0x00, 0xFF), alpha: 0.5, visible: true }, 628);
+        this.addTextDemoCase(textLayout, { text_size: 64, text_style: Regular }, 358);
+        this.addTextDemoCase(textLayout, { text_color: new RGBA(0xE4, 0x18, 0x18, 0xFF), text_size: 64, text_style: Regular }, 488);
+        this.addTextDemoCase(textLayout, { text_color: new RGBA(0x18, 0x63, 0xE4, 0xFF), text_size: 64, text_style: Regular, background_color: new RGBA(0xFF, 0x00, 0x00, 0xFF), alpha: 0.5, visible: true }, 628);
     }
 }
 

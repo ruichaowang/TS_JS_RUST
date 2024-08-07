@@ -34,7 +34,7 @@ declare module "ui_system" {
     export const LEFT: number;
     export const CENTER_VERTICAL: number;
     export const CENTER: number;
-    export const Bold: number;
+    export const Regular: number;
     export const RIGHT: number;
     export const TOP: number;
     export const BOTTOM: number;
