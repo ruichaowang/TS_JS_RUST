@@ -4,7 +4,7 @@ fn main() {
     // 示例：运行外部命令（例如：TypeScript 编译器 tsc）
     let output = Command::new("tsc")
         .arg("--project")
-        .arg("ts/hello2_tsconfig.json")
+        .arg("./ts/hello2_tsconfig.json")
         .output()
         .expect("Failed to run tsc");
 
